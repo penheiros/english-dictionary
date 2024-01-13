@@ -9,20 +9,28 @@ const exampleLabel = document.getElementsByClassName('example')[0];
 const volumeButton = document.getElementsByClassName('volume-button')[0];
 const sound = document.getElementById('sound');
 
+const volumeStatus = document.getElementsByClassName('volume-status')[0];
+let wordAvailable = true;
 
 function fetchApi() { 
   fetch(`${url}${searchInput.value}`)
   .then((response) => response.json())
   .then(
     (data) => {
-      console.log(data)
-      wordLabel.innerHTML = data[0].word;
-      wordInfo.innerHTML = `${data[0].meanings[0].partOfSpeech}  /${data[0].phonetic}/`;
-      definitionLabel.innerHTML = data[0].meanings[0].definitions[0].definition;
-      exampleLabel.innerHTML = data[0].meanings[0].definitions[0].example || 'No examples available for this word';
+      try {
 
-      sound.setAttribute('src', `${data[0].phonetics[0].audio}`);
-      console.log(sound)
+        console.log(data)
+        wordLabel.textContent = data[0].word;
+        wordInfo.textContent = `${data[0].meanings[0].partOfSpeech}  /${data[0].phonetic}/`;
+        definitionLabel.textContent = data[0].meanings[0].definitions[0].definition;
+        exampleLabel.textContent = data[0].meanings[0].definitions[0].example || 'No examples available for this word';
+
+        sound.setAttribute('src', `${data[0].phonetics[0].audio}`);
+
+      } catch(error) {
+        wordAvailable = false;
+        wordLabel.textContent = 'Unavailable';
+      }
     })
 }
 
@@ -31,11 +39,8 @@ searchButton.addEventListener('click', function() {
 })
 
 volumeButton.addEventListener('click', function() {
-  try {
+  if (sound.getAttribute('src') !== '') {
     sound.play();
-  }
-  catch {
-    alert("This word does not have an available audio")
   }
 })
 
@@ -44,4 +49,16 @@ searchInput.addEventListener('keyup', function(event) {
   if (event.keyCode === 13) {
     fetchApi();
   }
+})
+
+volumeButton.addEventListener('mouseover', function() {
+  volumeStatus.style.width = '15vh';
+  if (wordAvailable & sound.getAttribute('src') !== '') {volumeStatus.textContent = 'Hear the pronounciation';} 
+  else {volumeStatus.textContent = 'Unavailable for this word'}
+
+})
+
+volumeButton.addEventListener('mouseout', function() {
+  volumeStatus.style.width = 0;
+  volumeStatus.textContent = '';
 })

@@ -1,8 +1,9 @@
 :root {
-  --purple: #764de5;
+  --purple: #554de5;
   --dark-purple: #724587;
   --lightgrey: rgb(136, 136, 136);
   --lightergrey: rgba(136, 136, 136, 0.285);
+  --dark: rgb(26, 26, 26);
 
   font-family: 'AR One Sans', sans-serif;
   font-family: 'Raleway', sans-serif;
@@ -77,6 +78,23 @@ h2, h3, p {margin: 0;}
   background-color: transparent;
   cursor: pointer;
   width: 100%;
+  position: relative;
+  display: flex; justify-content: center; align-items: center;
+}
+.volume-status {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 4vh;
+  background-color: var(--dark);
+  top: 0%;
+  right: -30%;
+  border-radius: .5vh;
+  transform: translate(100%, -100%);
+  transition: .1s;
+  color: white;
+  font-size: 1.2vh;
+  display: flex; justify-content: center; align-items: center;
 }
 
 .result-container {
@@ -110,4 +128,8 @@ h2, h3, p {margin: 0;}
 
 .volume-button img {
   width: 2.5vh;
+}
+
+@media screen and (max-width: 768px) {
+  .dictionary-wrapper {width: 30vh !important;}
 }
